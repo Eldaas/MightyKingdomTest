@@ -12,6 +12,7 @@
     {
         base.LogicUpdate();
         clock.timerModePanel.ListenForZero();
+        clock.timerModePanel.ButtonValidation();
         clock.timerModePanel.UpdateUI();
     }
 

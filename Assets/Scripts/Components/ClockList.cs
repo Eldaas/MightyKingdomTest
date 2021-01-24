@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +8,10 @@ public class ClockList : MonoBehaviour
     [Header("Inspector References")]
     public Button addNewButton;
     public Button deleteAllButton;
+    public Button exitButton;
     public GameObject clockPrefab;
+    public AudioSource audioSource;
+    public AudioClip exitSound;
 
     [Header("Data")]
     public List<Clock> activeClocks;
@@ -26,6 +27,11 @@ public class ClockList : MonoBehaviour
         dropdownData = TimezonesToDropdown();
     }
 
+    private void Update()
+    {
+        ButtonValidation();
+    }
+
     /// <summary>
     /// Registers any event/onClick listeners required by this ClockList.
     /// </summary>
@@ -33,6 +39,7 @@ public class ClockList : MonoBehaviour
     {
         addNewButton.onClick.AddListener(AddClock);
         deleteAllButton.onClick.AddListener(DeleteAll);
+        exitButton.onClick.AddListener(ExitApplication);
     }
 
     /// <summary>
@@ -58,10 +65,40 @@ public class ClockList : MonoBehaviour
     /// </summary>
     private void DeleteAll()
     {
-        foreach(Clock child in activeClocks.ToArray())
+        Clock[] allClocks = activeClocks.ToArray();
+
+        for (int i = 1; i < allClocks.Length; i++)
         {
-            activeClocks.Remove(child);
-            Destroy(child.gameObject);
+            Clock thisClock = allClocks[i];
+            activeClocks.Remove(thisClock);
+            Destroy(thisClock.gameObject);
+        }
+    }
+
+    private void ExitApplication()
+    {
+        deleteAllButton.interactable = false;
+        audioSource.PlayOneShot(exitSound);
+        Invoke("Quit", 3f);
+    }
+
+    private void Quit()
+    {
+        Application.Quit();
+    }
+
+    /// <summary>
+    /// Performs a validation check to test whether buttons in the scene should be interactable or not.
+    /// </summary>
+    private void ButtonValidation()
+    {
+        if(activeClocks.Count < 2)
+        {
+            deleteAllButton.interactable = false;
+        }
+        else
+        {
+            deleteAllButton.interactable = true;
         }
     }
 

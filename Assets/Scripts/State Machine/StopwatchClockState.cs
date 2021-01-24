@@ -12,6 +12,7 @@
     {
         base.LogicUpdate();
         clock.stopwatchModePanel.UpdateUI();
+        clock.stopwatchModePanel.ButtonValidation();
     }
 
     public override void Exit()

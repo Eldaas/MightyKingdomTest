@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ClockPanel : MonoBehaviour
 {
-    [Header("Inherited Inspector References")]
+    [Header("Inherited Inspector References [ClockPanel]")]
     public Clock parentClock;
 
-    [Header("Inherited Data")]
+    [Header("Inherited Data [ClockPanel]")]
     public bool isRunning = false;
 
     protected virtual void Awake(){}
@@ -28,22 +26,4 @@ public class ClockPanel : MonoBehaviour
     /// Overridden by the children subclasses and used within the clock state update loop to update the UI upon each frame.
     /// </summary>
     public virtual void UpdateUI(){}
-
-    protected virtual void StartTimer()
-    {
-        isRunning = true;
-    }
-
-    protected virtual void StopTimer()
-    {
-        isRunning = false;
-    }
-
-    /// <summary>
-    /// Resets the clock back to its default state.
-    /// </summary>
-    public virtual void ResetClock()
-    {
-        StopTimer();
-    }
 }

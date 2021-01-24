@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ModeSelectorPanel : MonoBehaviour
@@ -16,14 +14,20 @@ public class ModeSelectorPanel : MonoBehaviour
         RegisterListeners();
     }
 
+    /// <summary>
+    /// Adds onClick listeners to the mode selector panel's icons, representing each mode for the clock.
+    /// </summary>
     private void RegisterListeners()
     {
-        clockModeButton.onClick.AddListener(selectClockMode);
-        timerModeButton.onClick.AddListener(selectTimerMode);
-        stopwatchModeButton.onClick.AddListener(selectStopwatchMode);
+        clockModeButton.onClick.AddListener(SelectClockMode);
+        timerModeButton.onClick.AddListener(SelectTimerMode);
+        stopwatchModeButton.onClick.AddListener(SelectStopwatchMode);
     }
 
-    private void selectClockMode()
+    /// <summary>
+    /// Tied to an onClick listener, this changes the parent clock's mode to standard clock mode.
+    /// </summary>
+    private void SelectClockMode()
     {
         if(clock.clockSM.CurrentState != clock.standard)
         {
@@ -32,7 +36,10 @@ public class ModeSelectorPanel : MonoBehaviour
         
     }
 
-    private void selectTimerMode()
+    /// <summary>
+    /// Tied to an onClick listener, this changes the parent clock's mode to timer clock mode.
+    /// </summary>
+    private void SelectTimerMode()
     {
         if (clock.clockSM.CurrentState != clock.timer)
         {
@@ -41,7 +48,10 @@ public class ModeSelectorPanel : MonoBehaviour
 
     }
 
-    private void selectStopwatchMode()
+    /// <summary>
+    /// Tied to an onClick listener, this changes the parent clock's mode to stopwatch clock mode.
+    /// </summary>
+    private void SelectStopwatchMode()
     {
         if (clock.clockSM.CurrentState != clock.stopwatch)
         {

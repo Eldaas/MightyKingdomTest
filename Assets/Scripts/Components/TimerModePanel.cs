@@ -1,23 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+﻿using UnityEngine;
 
-public class TimerModePanel : ClockPanel
+public class TimerModePanel : CounterClockType
 {
-    [Header("Inspector References")]
-    public TMP_InputField hoursInput;
-    public TMP_InputField minutesInput;
-    public TMP_InputField secondsInput;
-    public Button playButton;
-    public Button stopButton;
+    [Header("Non-inherited Inspector References")]
     public AudioSource audioSource;
-    public AudioClip timerElapseSound;
-
-    [Header("Data")]
-    public float secondsRemaining;
+    public AudioClip timerElapseSound;    
 
     protected override void Awake()
     {
@@ -25,31 +12,12 @@ public class TimerModePanel : ClockPanel
         RegisterListeners();
         audioSource = Camera.main.GetComponent<AudioSource>();
     }
-
-    protected override void Start()
-    {
-        base.Start();
-        Initialise();
-    }
-
-    protected override void RegisterListeners()
-    {
-        base.RegisterListeners();
-        playButton.onClick.AddListener(StartTimer);
-        stopButton.onClick.AddListener(StopTimer);
-    }
-
-    protected override void Initialise()
-    {
-        base.Initialise();
-        ResetClock();
-    }
-
+    
     protected override void StartTimer()
     {
-        secondsRemaining = InputToSeconds();
+        secondsTimer = InputToSeconds();
 
-        if (secondsRemaining > 0)
+        if (secondsTimer > 0)
         {
             base.StartTimer();
             LockInputs(true);
@@ -76,28 +44,64 @@ public class TimerModePanel : ClockPanel
     }
 
     /// <summary>
-    /// Converts the number of seconds remaining into hours, minutes and seconds and updates the input fields on the timer.
-    /// </summary>
-    private void ParseTimeRemaining()
-    {
-        TimeSpan time = TimeSpan.FromSeconds(secondsRemaining);
-
-        hoursInput.text = string.Format("{0:D2}", time.Hours);
-        minutesInput.text = string.Format("{0:D2}", time.Minutes);
-        secondsInput.text = string.Format("{0:D2}", time.Seconds);
-    }
-
-    /// <summary>
     /// Used by the timer state to listen for when the timer reaches zero. Upon this occurring the timer will be zeroed, an audio notification will play and the timer will be stopped.
     /// </summary>
     public void ListenForZero()
     {
-        if(isRunning && secondsRemaining <= float.Epsilon)
+        if(isRunning && secondsTimer <= float.Epsilon)
         {
-            secondsRemaining = 0f;
+            secondsTimer = 0f;
             StopTimer();
             audioSource.PlayOneShot(timerElapseSound);
+            ResetClock();
         }
+    }
+
+    public override void ButtonValidation()
+    {
+        base.ButtonValidation();
+        if(!isRunning && CheckInputFields())
+        {
+            playButton.interactable = true;
+        }        
+        else
+        {
+            playButton.interactable = false;
+        }
+    }
+
+    /// <summary>
+    /// Checks each of the timer clock input fields to determine whether the field contains a string number value higher than 0.
+    /// </summary>
+    /// <returns>True if a timer clock string field is '00' or '0', false if all fields are either '00' or '0'.</returns>
+    private bool CheckInputFields()
+    {
+
+        if(hoursInput.text != "00")
+        {
+            if (hoursInput.text != "0")
+            {
+                return true;
+            }
+        }
+
+        if(minutesInput.text != "00")
+        {
+            if(minutesInput.text != "0")
+            {
+                return true;
+            }
+        }
+
+        if(secondsInput.text != "00")
+        {
+            if(secondsInput.text != "0")
+            {
+                return true;
+            } 
+        }
+
+        return false;
     }
 
     public override void UpdateUI()
@@ -105,20 +109,21 @@ public class TimerModePanel : ClockPanel
         base.UpdateUI();
         if(isRunning)
         {
-            secondsRemaining -= Time.deltaTime;
-            ParseTimeRemaining();
+            secondsTimer -= Time.deltaTime;
+            ParseTime();
         }
     }
 
     public override void ResetClock()
     {
         base.ResetClock();
-        hoursInput.text = "00";
-        minutesInput.text = "00";
-        secondsInput.text = "00";
         LockInputs(false);
     }
 
+    /// <summary>
+    /// Locks the timer clock hours, minutes and seconds input.
+    /// </summary>
+    /// <param name="state">If 'true', locks input. If 'false', unlocks input.</param>
     private void LockInputs(bool state)
     {
         hoursInput.interactable = !state;
