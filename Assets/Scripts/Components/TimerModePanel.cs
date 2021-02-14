@@ -2,9 +2,10 @@
 
 public class TimerModePanel : CounterClockType
 {
-    [Header("Non-inherited Inspector References")]
-    public AudioSource audioSource;
-    public AudioClip timerElapseSound;    
+    [Header("Non-inherited Inspector References"), SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip timerElapseSound;    
 
     protected override void Awake()
     {

@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class StopwatchModePanel : CounterClockType
 {
-    [Header("Inspector References")]
-    public Button resetButton;
+    [Header("Inspector References"), SerializeField]
+    private Button resetButton;
 
     protected override void Awake()
     {

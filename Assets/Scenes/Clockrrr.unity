@@ -1057,7 +1057,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &781555997
 GameObject:
@@ -1453,7 +1453,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &963194229
 AudioSource:
@@ -1845,6 +1845,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1271184637}
   m_CullTransparentMesh: 0
+--- !u!1 &1429042252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1429042254}
+  - component: {fileID: 1429042253}
+  m_Layer: 0
+  m_Name: Clock Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1429042253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429042252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd6543506b8b9440b5a0e59b0a2638f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addNewButton: {fileID: 781555999}
+  deleteAllButton: {fileID: 865507468}
+  exitButton: {fileID: 209194231}
+  clockPrefab: {fileID: 4257927595001033067, guid: 8b4f34201eef09d4386367fd54270b72,
+    type: 3}
+  audioSource: {fileID: 963194229}
+  exitSound: {fileID: 8300000, guid: 467e70ba76146e740a5b23aaabc56720, type: 3}
+  activeClocks: []
+  dropdownData: []
+  defaultTimeZone: 0
+--- !u!4 &1429042254
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429042252}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 770.0292, y: 442.44598, z: -867.52325}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1546755222
 GameObject:
   m_ObjectHideFlags: 0
@@ -1938,7 +1991,7 @@ RectTransform:
   - {fileID: 833485706}
   - {fileID: 290434814}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2613,7 +2666,6 @@ GameObject:
   - component: {fileID: 8686670666321830028}
   - component: {fileID: 8686670666321830031}
   - component: {fileID: 8686670666321830030}
-  - component: {fileID: 8686670666321830032}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -2659,24 +2711,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
---- !u!114 &8686670666321830032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8686670666321830029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fd6543506b8b9440b5a0e59b0a2638f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addNewButton: {fileID: 781555999}
-  deleteAllButton: {fileID: 865507468}
-  exitButton: {fileID: 209194231}
-  clockPrefab: {fileID: 4257927595001033067, guid: 8b4f34201eef09d4386367fd54270b72,
-    type: 3}
-  audioSource: {fileID: 963194229}
-  exitSound: {fileID: 8300000, guid: 467e70ba76146e740a5b23aaabc56720, type: 3}
-  activeClocks: []
-  dropdownData: []

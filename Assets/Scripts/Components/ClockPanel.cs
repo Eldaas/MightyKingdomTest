@@ -2,11 +2,11 @@
 
 public class ClockPanel : MonoBehaviour
 {
-    [Header("Inherited Inspector References [ClockPanel]")]
-    public Clock parentClock;
+    [Header("Inherited Inspector References [ClockPanel]"), SerializeField]
+    protected Clock parentClock;
 
     [Header("Inherited Data [ClockPanel]")]
-    public bool isRunning = false;
+    protected bool isRunning = false;
 
     protected virtual void Awake(){}
 

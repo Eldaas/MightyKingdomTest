@@ -5,10 +5,12 @@ using TMPro;
 
 public class StandardModePanel : ClockPanel
 {
-    [Header("Inspector References")]
-    public TextMeshProUGUI timeText;
-    public Dropdown dropdown;
-    public Toggle formatToggle;
+    [Header("Inspector References"), SerializeField]
+    private TextMeshProUGUI timeText;
+    [SerializeField]
+    private Dropdown dropdown;
+    [SerializeField]
+    private Toggle formatToggle;
     
     protected override void Awake()
     {
@@ -26,7 +28,7 @@ public class StandardModePanel : ClockPanel
     {
         base.Initialise();
         dropdown.AddOptions(parentClock.parentList.dropdownData);
-        dropdown.value = 116;
+        dropdown.value = parentClock.parentList.defaultTimeZone;
         formatToggle.isOn = false;
     }
 
