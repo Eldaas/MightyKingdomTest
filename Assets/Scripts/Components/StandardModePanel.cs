@@ -27,8 +27,8 @@ public class StandardModePanel : ClockPanel
     protected override void Initialise()
     {
         base.Initialise();
-        dropdown.AddOptions(parentClock.parentList.dropdownData);
-        dropdown.value = parentClock.parentList.defaultTimeZone;
+        dropdown.AddOptions(ClockManager.instance.dropdownData);
+        dropdown.value = ClockManager.instance.defaultTimeZone;
         formatToggle.isOn = false;
     }
 
@@ -45,7 +45,7 @@ public class StandardModePanel : ClockPanel
     protected string CalculateCurrentTime()
     {
         string output;
-        DateTime dateTime = TimeZoneInfo.ConvertTime(parentClock.parentList.utcDateTime, parentClock.parentList.timezones[dropdown.value]);
+        DateTime dateTime = TimeZoneInfo.ConvertTime(ClockManager.instance.utcDateTime, ClockManager.instance.timezones[dropdown.value]);
 
         if (formatToggle.isOn)
         {

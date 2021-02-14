@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class ClockManager : MonoBehaviour
 {
+    public static ClockManager instance;
+
     [Header("Inspector References")]
+    public Transform viewportContent;
     public Button addNewButton;
     public Button deleteAllButton;
     public Button exitButton;
@@ -22,6 +25,19 @@ public class ClockManager : MonoBehaviour
 
     private void Awake()
     {
+        #region Singleton
+
+        if(GameObject.FindObjectsOfType<ClockManager>().Length > 1)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+
+        #endregion
+
         RegisterListeners();
         CheckForClocks();
         timezones = GetTimeZones();
@@ -49,7 +65,7 @@ public class ClockManager : MonoBehaviour
     /// </summary>
     private void CheckForClocks()
     {
-        Clock[] initialClocks = GetComponentsInChildren<Clock>();
+        Clock[] initialClocks = viewportContent.gameObject.GetComponentsInChildren<Clock>();
         activeClocks = new List<Clock>(initialClocks);
     }
 
@@ -72,7 +88,7 @@ public class ClockManager : MonoBehaviour
     /// </summary>
     private void AddClock()
     {
-        GameObject instancedObject = Instantiate(clockPrefab, transform);
+        GameObject instancedObject = Instantiate(clockPrefab, viewportContent);
         activeClocks.Add(instancedObject.GetComponent<Clock>());
     }
 

@@ -1874,6 +1874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd6543506b8b9440b5a0e59b0a2638f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewportContent: {fileID: 8686670666321830028}
   addNewButton: {fileID: 781555999}
   deleteAllButton: {fileID: 865507468}
   exitButton: {fileID: 209194231}
