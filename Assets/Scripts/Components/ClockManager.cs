@@ -7,21 +7,35 @@ public class ClockManager : MonoBehaviour
 {
     public static ClockManager instance;
 
-    [Header("Inspector References")]
-    public Transform viewportContent;
-    public Button addNewButton;
-    public Button deleteAllButton;
-    public Button exitButton;
-    public GameObject clockPrefab;
-    public AudioSource audioSource;
-    public AudioClip exitSound;
+    [Header("Inspector References"), SerializeField]
+    private Transform viewportContent;
+    [SerializeField]
+    private Button addNewButton;
+    [SerializeField]
+    private Button deleteAllButton;
+    [SerializeField]
+    private Button exitButton;
+    [SerializeField]
+    private GameObject clockPrefab;
+    [SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip exitSound;
 
     [Header("Data")]
-    public List<Clock> activeClocks;
-    public DateTime utcDateTime { get { return DateTime.UtcNow; } }
     public List<TimeZoneInfo> timezones;
     public List<Dropdown.OptionData> dropdownData;
+    [HideInInspector]
     public int defaultTimeZone;
+    public int activeClockCount { get { return activeClocks.Count; } }
+    public DateTime utcDateTime { get { return DateTime.UtcNow; } }
+    [SerializeField]
+    private int initialPooledClocks;
+    [SerializeField]
+    private List<Clock> activeClocks;
+    [SerializeField]
+    private List<Clock> pooledClocks;
+    
 
     private void Awake()
     {
@@ -39,10 +53,15 @@ public class ClockManager : MonoBehaviour
         #endregion
 
         RegisterListeners();
-        CheckForClocks();
+        CheckForEditorClocks();
         timezones = GetTimeZones();
         dropdownData = TimezonesToDropdown();
         SetDefaultTimeZone();
+    }
+
+    private void Start()
+    {
+        SpawnInitialPooledClocks();
     }
 
     private void Update()
@@ -63,12 +82,29 @@ public class ClockManager : MonoBehaviour
     /// <summary>
     /// Checks if any clocks have already been added and adds them to the tracker list.
     /// </summary>
-    private void CheckForClocks()
+    private void CheckForEditorClocks()
     {
         Clock[] initialClocks = viewportContent.gameObject.GetComponentsInChildren<Clock>();
         activeClocks = new List<Clock>(initialClocks);
     }
 
+    /// <summary>
+    /// Spawns the inspector-defined number of clocks and adds them to the pool.
+    /// </summary>
+    private void SpawnInitialPooledClocks()
+    {
+        if(initialPooledClocks > 0)
+        {
+            for (int i = 0; i < initialPooledClocks; i++)
+            {
+                InstantiateClock(false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Looks for 'Cen. Australia Standard Time' and checks this against the list of obtained timezones. If it exists, it gets its index and sets this as the application's default timezone.
+    /// </summary>
     private void SetDefaultTimeZone()
     {
         TimeZoneInfo adelaide = TimeZoneInfo.FindSystemTimeZoneById("Cen. Australia Standard Time");
@@ -88,12 +124,67 @@ public class ClockManager : MonoBehaviour
     /// </summary>
     private void AddClock()
     {
-        GameObject instancedObject = Instantiate(clockPrefab, viewportContent);
-        activeClocks.Add(instancedObject.GetComponent<Clock>());
+
+        if(pooledClocks.Count > 0)
+        {
+            Clock clock = GetPooledClock();
+            pooledClocks.Remove(clock);
+            activeClocks.Add(clock);
+            clock.gameObject.SetActive(true);
+        }
+        else
+        {
+            InstantiateClock(true);
+        }
     }
 
     /// <summary>
-    /// Removes all objects from the list.
+    /// Instantiates a new clock.
+    /// </summary>
+    /// <param name="isActive">If true, adds the clock to the list of active clocks and sets it active immediately. If false, adds the clock to the pooled clocks and sets inactive.</param>
+    /// <returns></returns>
+    private Clock InstantiateClock(bool isActive)
+    {
+        GameObject instancedObject = Instantiate(clockPrefab, viewportContent);
+        Clock instancedClock = instancedObject.GetComponent<Clock>();
+        
+        if(isActive)
+        {
+            activeClocks.Add(instancedClock);
+            instancedObject.SetActive(true);
+        }
+        else
+        {
+            pooledClocks.Add(instancedClock);
+            instancedObject.SetActive(false);
+        }
+
+        return instancedClock;        
+    }
+
+    /// <summary>
+    /// Returns the pooled clock at index 0 of the pooled clocks list.
+    /// </summary>
+    private Clock GetPooledClock()
+    {
+        return pooledClocks[0];
+    }
+
+    /// <summary>
+    /// Resets the clock, moves it into the pooled clocks list, and sets it inactive.
+    /// </summary>
+    /// <param name="clock">The clock being 'deleted'.</param>
+    public void DeleteClock(Clock clock)
+    {
+        clock.timerModePanel.ResetClock();
+        clock.stopwatchModePanel.ResetClock();
+        activeClocks.Remove(clock);
+        pooledClocks.Add(clock);
+        clock.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Gets all active clocks and calls the DeleteClock function for each. All of the clocks will be reset, sent back to the clock pool and set inactive.
     /// </summary>
     private void DeleteAll()
     {
@@ -102,8 +193,7 @@ public class ClockManager : MonoBehaviour
         for (int i = 1; i < allClocks.Length; i++)
         {
             Clock thisClock = allClocks[i];
-            activeClocks.Remove(thisClock);
-            Destroy(thisClock.gameObject);
+            DeleteClock(thisClock);
         }
     }
 

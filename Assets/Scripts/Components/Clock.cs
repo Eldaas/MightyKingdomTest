@@ -8,7 +8,8 @@ public class Clock : MonoBehaviour
     public StandardModePanel standardModePanel;
     public TimerModePanel timerModePanel;
     public StopwatchModePanel stopwatchModePanel;
-    public Button deleteButton;
+    [SerializeField]
+    private Button deleteButton;
 
     [Header("State Machine")]
     public ClockStateMachine clockSM;
@@ -41,8 +42,7 @@ public class Clock : MonoBehaviour
     /// </summary>
     public void DeleteClock()
     {
-        ClockManager.instance.activeClocks.Remove(this);
-        Destroy(gameObject);
+        ClockManager.instance.DeleteClock(this);
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class Clock : MonoBehaviour
     /// </summary>
     private void DeleteButtonSelectable()
     {
-        if(ClockManager.instance.activeClocks.Count > 1)
+        if(ClockManager.instance.activeClockCount > 1)
         {
             deleteButton.interactable = true;
         }

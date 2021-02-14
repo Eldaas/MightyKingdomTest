@@ -5,15 +5,19 @@ using TMPro;
 
 public class CounterClockType : ClockPanel
 {
-    [Header("Inherited Inspector References [CounterClockType]")]
-    public TMP_InputField hoursInput;
-    public TMP_InputField minutesInput;
-    public TMP_InputField secondsInput;
-    public Button playButton;
-    public Button stopButton;
+    [Header("Inherited Inspector References [CounterClockType]"), SerializeField]
+    protected TMP_InputField hoursInput;
+    [SerializeField]
+    protected TMP_InputField minutesInput;
+    [SerializeField]
+    protected TMP_InputField secondsInput;
+    [SerializeField]
+    protected Button playButton;
+    [SerializeField]
+    protected Button stopButton;
 
-    [Header("Inherited Data References [CounterClockType]")]
-    public float secondsTimer;
+    [Header("Inherited Data References [CounterClockType]"), SerializeField]
+    protected float secondsTimer;
     
     protected override void Start()
     {
