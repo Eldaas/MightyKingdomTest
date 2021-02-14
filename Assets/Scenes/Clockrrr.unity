@@ -1882,9 +1882,11 @@ MonoBehaviour:
     type: 3}
   audioSource: {fileID: 963194229}
   exitSound: {fileID: 8300000, guid: 467e70ba76146e740a5b23aaabc56720, type: 3}
-  activeClocks: []
   dropdownData: []
   defaultTimeZone: 0
+  initialPooledClocks: 50
+  activeClocks: []
+  pooledClocks: []
 --- !u!4 &1429042254
 Transform:
   m_ObjectHideFlags: 0
