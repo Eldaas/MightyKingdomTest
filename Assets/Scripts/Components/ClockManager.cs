@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ClockList : MonoBehaviour
+public class ClockManager : MonoBehaviour
 {
     [Header("Inspector References")]
     public Button addNewButton;
@@ -18,6 +18,7 @@ public class ClockList : MonoBehaviour
     public DateTime utcDateTime { get { return DateTime.UtcNow; } }
     public List<TimeZoneInfo> timezones;
     public List<Dropdown.OptionData> dropdownData;
+    public int defaultTimeZone;
 
     private void Awake()
     {
@@ -25,6 +26,7 @@ public class ClockList : MonoBehaviour
         CheckForClocks();
         timezones = GetTimeZones();
         dropdownData = TimezonesToDropdown();
+        SetDefaultTimeZone();
     }
 
     private void Update()
@@ -33,7 +35,7 @@ public class ClockList : MonoBehaviour
     }
 
     /// <summary>
-    /// Registers any event/onClick listeners required by this ClockList.
+    /// Registers any event/onClick listeners required by this ClockManager.
     /// </summary>
     private void RegisterListeners()
     {
@@ -49,6 +51,20 @@ public class ClockList : MonoBehaviour
     {
         Clock[] initialClocks = GetComponentsInChildren<Clock>();
         activeClocks = new List<Clock>(initialClocks);
+    }
+
+    private void SetDefaultTimeZone()
+    {
+        TimeZoneInfo adelaide = TimeZoneInfo.FindSystemTimeZoneById("Cen. Australia Standard Time");
+
+        if (timezones.Contains(adelaide))
+        {
+            defaultTimeZone = timezones.IndexOf(adelaide);
+        }
+        else
+        {
+            Debug.LogError("ClockManager => The default assigned timezone was not found on this system.");
+        }
     }
 
     /// <summary>

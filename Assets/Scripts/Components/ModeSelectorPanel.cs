@@ -3,11 +3,14 @@ using UnityEngine.UI;
 
 public class ModeSelectorPanel : MonoBehaviour
 {
-    [Header("Inspector References")]
-    public Button clockModeButton;
-    public Button timerModeButton;
-    public Button stopwatchModeButton;
-    public Clock clock;
+    [Header("Inspector References"), SerializeField]
+    protected Button clockModeButton;
+    [SerializeField]
+    protected Button timerModeButton;
+    [SerializeField]
+    protected Button stopwatchModeButton;
+    [SerializeField]
+    protected Clock clock;
 
     private void Awake()
     {

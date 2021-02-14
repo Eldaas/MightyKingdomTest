@@ -10,7 +10,7 @@ public class Clock : MonoBehaviour
     public StopwatchModePanel stopwatchModePanel;
     public Button deleteButton;
     [HideInInspector]
-    public ClockList parentList;
+    public ClockManager parentList;
 
     [Header("State Machine")]
     public ClockStateMachine clockSM;
@@ -24,7 +24,7 @@ public class Clock : MonoBehaviour
         standard = new StandardClockState(this, clockSM);
         timer = new TimerClockState(this, clockSM);
         stopwatch = new StopwatchClockState(this, clockSM);
-        parentList = GetComponentInParent<ClockList>();
+        parentList = GetComponentInParent<ClockManager>();
         deleteButton.onClick.AddListener(DeleteClock);
     }
 
