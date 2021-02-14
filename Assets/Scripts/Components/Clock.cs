@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class Clock : MonoBehaviour
 {
-    [Header("References")]
-    public ModeSelectorPanel modeSelectorPanel;
+    [Header("References"), SerializeField]
     public StandardModePanel standardModePanel;
     public TimerModePanel timerModePanel;
     public StopwatchModePanel stopwatchModePanel;
