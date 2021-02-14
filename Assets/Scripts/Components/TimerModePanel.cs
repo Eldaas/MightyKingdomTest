@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using TMPro;
 
 public class TimerModePanel : CounterClockType
 {
@@ -72,37 +73,33 @@ public class TimerModePanel : CounterClockType
     }
 
     /// <summary>
-    /// Checks each of the timer clock input fields to determine whether the field contains a string number value higher than 0.
+    /// Checks each of the timer clock input fields.
     /// </summary>
-    /// <returns>True if a timer clock string field is '00' or '0', false if all fields are either '00' or '0'.</returns>
+    /// <returns>True if the user has entered anything other than '00' or '0' in any of the fields.</returns>
     private bool CheckInputFields()
     {
 
-        if(hoursInput.text != "00")
+        if(CheckField(hoursInput) || CheckField(minutesInput) || CheckField(secondsInput))
         {
-            if (hoursInput.text != "0")
-            {
-                return true;
-            }
-        }
-
-        if(minutesInput.text != "00")
-        {
-            if(minutesInput.text != "0")
-            {
-                return true;
-            }
-        }
-
-        if(secondsInput.text != "00")
-        {
-            if(secondsInput.text != "0")
-            {
-                return true;
-            } 
+            return true;
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Checks the input field for its text value.
+    /// </summary>
+    /// <param name="field">The TMP_InputField being checked.</param>
+    /// <returns>True if the field being checked contains anything other than '00' or '0'.</returns>
+    private bool CheckField(TMP_InputField field)
+    {
+        if(field.text == "00" || field.text == "0")
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public override void UpdateUI()
